@@ -8,6 +8,7 @@ import InventoryContent from "../RecentContent/InventoryContent";
 import DemoLine from "./Demoline";
 import LiveCharts from "./LiveCharts";
 import Footer from "../../../layouts/Footer";
+import ActiveUsers from "../ActiveUsers/ActiveUsers";
 
 const Dashboard = () => {
   const { data, loading } = useSelector((state) => state?.setting) || {};
@@ -50,12 +51,21 @@ const Dashboard = () => {
         <LiveCharts information={cardInformation} />
       </div>
 
-      <div className="mb-5 animate-fadeInUp" style={{animationDelay: '0.3s'}}>
-        {data?.dashboardType === "inventory" ? (
-          <InventoryContent pageConfig={pageConfig} />
-        ) : (
-          <Content pageConfig={pageConfig} />
-        )}
+      {/* Active Users and Recent Content Section */}
+      <div className="mb-5 grid grid-cols-1 xl:grid-cols-4 gap-6">
+        {/* Currently Working Section */}
+        <div className="xl:col-span-1 animate-fadeInUp" style={{animationDelay: '0.2s'}}>
+          <ActiveUsers />
+        </div>
+        
+        {/* Recent Content Section */}
+        <div className="xl:col-span-3 animate-fadeInUp" style={{animationDelay: '0.3s'}}>
+          {data?.dashboardType === "inventory" ? (
+            <InventoryContent pageConfig={pageConfig} />
+          ) : (
+            <Content pageConfig={pageConfig} />
+          )}
+        </div>
       </div>
 
       <Footer data={data} />

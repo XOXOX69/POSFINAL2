@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect } from "react";
+import { Suspense, lazy, useEffect, memo } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import "./assets/styles/main.css";
@@ -10,8 +10,36 @@ import LoaderSpinner from "./components/loader/LoaderSpinner";
 import Login from "./components/user/Login";
 import { getSetting } from "./redux/rtk/features/setting/settingSlice";
 import ServerError from "./components/404/ServerError";
+
+// Lazy load layouts for better initial load
 const CustomerLayout = lazy(() => import("@/layouts/CustomerLayout"));
 const AdminLayout = lazy(() => import("@/layouts/AdminLayout"));
+
+// Memoized route component for better performance
+const MemoizedRoutes = memo(function MemoizedRoutes() {
+  return (
+    <Routes>
+      <Route
+        path="/*"
+        element={
+          <Suspense fallback={<LoaderSpinner />}>
+            <CustomerLayout />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/admin/*"
+        element={
+          <Suspense fallback={<LoaderSpinner />}>
+            <AdminLayout />
+          </Suspense>
+        }
+      />
+      <Route path="/admin/auth/login" exact element={<Login />} />
+      <Route path="/*" element={<Page404 />} />
+    </Routes>
+  );
+});
 
 function App() {
   const { data, loading, error } = useSelector((state) => state?.setting) || {};
@@ -27,40 +55,27 @@ function App() {
   let content = null;
   if (loading) content = <LoaderSpinner />;
   else if (data && !loading) {
-    content = (
-      <Routes>
-        <Route
-          path="/*"
-          element={
-            <Suspense fallback={<LoaderSpinner />}>
-              <CustomerLayout />
-            </Suspense>
-          }
-        />
-        <Route
-          path="/admin/*"
-          element={
-            <Suspense fallback={<LoaderSpinner />}>
-              <AdminLayout />
-            </Suspense>
-          }
-        />
-
-        <Route path="/admin/auth/login" exact element={<Login />} />
-        <Route path="/*" element={<Page404 />} />
-      </Routes>
-    );
+    content = <MemoizedRoutes />;
   } else if (error) {
     content = <ServerError/>;
   }
 
   return (
     <BrowserRouter>
-      <Toaster position='top-center' reverseOrder={false} />
-
+      <Toaster 
+        position='top-center' 
+        reverseOrder={false}
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: '#333',
+            color: '#fff',
+          },
+        }}
+      />
       {content}
     </BrowserRouter>
   );
 }
 
-export default App;
+export default memo(App);

@@ -8,7 +8,12 @@ import store from "./redux/rtk/app/store";
 import getQuery from "./utils/getQuery";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
+// Configure axios defaults for better performance
 axios.defaults.baseURL = import.meta.env.VITE_APP_API;
+axios.defaults.timeout = 30000; // 30 second timeout
+axios.defaults.headers.common['Accept'] = 'application/json';
+axios.defaults.headers.common['Content-Type'] = 'application/json';
+
 axios.interceptors.request.use(async (config) => {
   const query = getQuery();
   const isAdminPath = window.location.pathname.includes("/admin");

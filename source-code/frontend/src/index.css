@@ -1,5 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,6 +8,21 @@
   html,
   body {
     -webkit-tap-highlight-color: transparent;
+    /* Performance optimizations */
+    text-rendering: optimizeSpeed;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Enable GPU acceleration for smoother animations */
+  * {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
   }
 
   /* Chrome, Safari, Edge, Opera */
@@ -37,7 +52,7 @@
     background-position: right bottom;
     height: 100%;
     width: 100%;
-    animation: bgImage 2s linear;
+    animation: bgImage 0.5s ease-out;
   }
 
   .hero-glow {
@@ -49,6 +64,7 @@
 
   .floating-card {
     animation: float 9s ease-in-out infinite;
+    will-change: transform;
   }
 
   .floating-delay-1 {
@@ -79,6 +95,29 @@
       transform: translateY(-10px);
     }
   }
+}
+
+/* Performance: Use GPU acceleration for transitions */
+.ant-table,
+.ant-modal,
+.ant-drawer,
+.ant-dropdown,
+.ant-select-dropdown {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+/* Faster transitions for UI elements */
+.ant-btn,
+.ant-input,
+.ant-select,
+.ant-table-row {
+  transition: all 0.15s ease-out !important;
+}
+
+/* Smooth table hover effects */
+.ant-table-tbody > tr:hover {
+  transition: background-color 0.1s ease !important;
 }
 
 html,

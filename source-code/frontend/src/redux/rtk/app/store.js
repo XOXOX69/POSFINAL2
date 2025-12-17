@@ -133,24 +133,13 @@ const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: {
-        // Ignore these action types
-        ignoredActions: [
-          "product/loadSingleProduct/fulfilled",
-          "vatTax/loadVatTaxStatement/fulfilled",
-          "transaction/deleteStaff/fulfilled",
-          "productCategory/loadSingleProductCategory/fulfilled",
-          "productSubCategory/loadSingleProductSubCategory/fulfilled",
-          "productBrand/loadSingleProductBrand/fulfilled",
-          "supplier/loadSupplier/fulfilled",
-          "customer/loadSingleCustomer/fulfilled",
-          "sale/loadSingleSale/fulfilled",
-          "user/loadSingleStaff/fulfilled",
-          "designation/loadSingleDesignation/fulfilled",
-          "user/loadSingleStaff/fulfilled",
-        ],
-      },
-    }).concat(),
+      // Disable immutability check in production for better performance
+      immutableCheck: process.env.NODE_ENV === 'development',
+      // Disable serializable check for better performance
+      serializableCheck: false,
+    }),
+  // Enable Redux DevTools only in development
+  devTools: process.env.NODE_ENV === 'development',
 });
 
 export default store;

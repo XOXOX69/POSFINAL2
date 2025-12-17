@@ -17,3 +17,4 @@ use App\Http\Controllers\DashboardController;
 
 Route::get("/", [DashboardController::class, 'getDashboardData']);
 Route::get("/chart-data", [DashboardController::class, 'getChartData']);
+Route::get("/active-users", [DashboardController::class, 'getActiveUsers']);

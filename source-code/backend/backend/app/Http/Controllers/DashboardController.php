@@ -7,6 +7,7 @@ use App\Models\AppSetting;
 use App\Models\Customer;
 use App\Models\PurchaseInvoice;
 use App\Models\SaleInvoice;
+use App\Models\Users;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -244,6 +245,54 @@ class DashboardController extends Controller
                     'purchasesCount' => (int) ($todayPurchases->count ?? 0),
                     'purchasesTotalAmount' => (float) ($todayPurchases->total ?? 0),
                 ]
+            ], 200);
+
+        } catch (Exception $err) {
+            return response()->json(['error' => $err->getMessage()], 500);
+        }
+    }
+
+    public function getActiveUsers(Request $request): JsonResponse
+    {
+        try {
+            // Get storeId for filtering - returns null for All Branches mode
+            $storeId = $this->getStoreId($request);
+            
+            $activeUsers = Users::where('isLogin', 'true')
+                ->where('status', 'true')
+                ->when($storeId !== null, function ($query) use ($storeId) {
+                    return $query->where('storeId', $storeId);
+                })
+                ->with(['role:id,name', 'store:id,name,code', 'designationHistory' => function($query) {
+                    $query->with('designation:id,name')->latest()->limit(1);
+                }])
+                ->select('id', 'firstName', 'lastName', 'username', 'email', 'image', 'roleId', 'storeId', 'updated_at')
+                ->orderBy('updated_at', 'desc')
+                ->get();
+
+            $activeUsers->transform(function ($user) {
+                $designation = $user->designationHistory->first()?->designation?->name ?? null;
+                return [
+                    'id' => $user->id,
+                    'firstName' => $user->firstName,
+                    'lastName' => $user->lastName,
+                    'username' => $user->username,
+                    'email' => $user->email,
+                    'image' => $user->image,
+                    'role' => $user->role?->name,
+                    'store' => $user->store ? [
+                        'id' => $user->store->id,
+                        'name' => $user->store->name,
+                        'code' => $user->store->code,
+                    ] : null,
+                    'designation' => $designation,
+                    'loginTime' => $user->updated_at,
+                ];
+            });
+
+            return response()->json([
+                'activeUsers' => $activeUsers,
+                'totalActive' => $activeUsers->count(),
             ], 200);
 
         } catch (Exception $err) {

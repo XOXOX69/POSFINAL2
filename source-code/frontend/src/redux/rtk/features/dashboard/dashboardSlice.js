@@ -5,9 +5,12 @@ import { errorHandler, successHandler } from "../../../../utils/functions";
 const initialState = {
   info: null,
   chartData: null,
+  activeUsers: null,
+  totalActiveUsers: 0,
   error: "",
   loading: false,
   chartLoading: false,
+  activeUsersLoading: false,
 };
 
 export const loadDashboardData = createAsyncThunk(
@@ -29,6 +32,18 @@ export const loadChartData = createAsyncThunk(
   async () => {
     try {
       const { data } = await axios.get(`dashboard/chart-data`);
+      return successHandler(data);
+    } catch (error) {
+      return errorHandler(error);
+    }
+  }
+);
+
+export const loadActiveUsers = createAsyncThunk(
+  "dashboard/loadActiveUsers",
+  async () => {
+    try {
+      const { data } = await axios.get(`dashboard/active-users`);
       return successHandler(data);
     } catch (error) {
       return errorHandler(error);
@@ -71,6 +86,22 @@ const dashboardSlice = createSlice({
 
     builder.addCase(loadChartData.rejected, (state) => {
       state.chartLoading = false;
+    });
+
+    // 3) ====== builders for loadActiveUsers ======
+
+    builder.addCase(loadActiveUsers.pending, (state) => {
+      state.activeUsersLoading = true;
+    });
+
+    builder.addCase(loadActiveUsers.fulfilled, (state, action) => {
+      state.activeUsersLoading = false;
+      state.activeUsers = action.payload?.data?.activeUsers;
+      state.totalActiveUsers = action.payload?.data?.totalActive;
+    });
+
+    builder.addCase(loadActiveUsers.rejected, (state) => {
+      state.activeUsersLoading = false;
     });
   },
 });
