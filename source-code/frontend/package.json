@@ -21,7 +21,7 @@
 	},
 	"dependencies": {
 		"@ant-design/charts": "^1.4.2",
-		"@ant-design/icons": "^5.2.5",
+		"@ant-design/icons": "^4.8.3",
 		"@ant-design/pro-layout": "^7.16.8",
 		"@react-oauth/google": "^0.12.1",
 		"@reduxjs/toolkit": "^1.9.1",
