@@ -4,13 +4,8 @@ import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react({
-      // Enable Fast Refresh for better dev experience
-      fastRefresh: true,
-    }),
-  ],
-  base: "/",
+  plugins: [react()],
+  base: process.env.VITE_BASE_PATH || "/react-vite-deploy",
   resolve: {
     alias: {
       // eslint-disable-next-line no-undef
