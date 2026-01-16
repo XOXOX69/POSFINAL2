@@ -765,7 +765,7 @@ class ProductController extends Controller
 
             $product->update([
                 'name' => $request->input('name') ?? $product->name,
-                'productThumbnailImage' => $file_paths[0] ?? $product->productThumbnailImage,
+                'productThumbnailImage' => $product->productThumbnailImage,
                 'productSubCategoryId' => (int) $request->input('productSubCategoryId') ? (int) $request->input('productSubCategoryId') : $product->productSubCategoryId,
                 'productBrandId' => (int) $request->input('productBrandId') ? (int) $request->input('productBrandId') : $product->productBrandId,
                 'description' => $request->input('description') ?? $product->description,

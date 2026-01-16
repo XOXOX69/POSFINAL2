@@ -617,6 +617,41 @@ const SideNav = ({ collapsed, setCollapsed }) => {
     },
     {
       label: (
+        <NavLink to="/admin/cfd-ads">
+          <span>CFD Advertisements</span>
+        </NavLink>
+      ),
+      key: "cfdAds",
+      icon: <BsBuildingFillGear />,
+    },
+    {
+      label: (
+        <NavLink to="/admin/modifiers">
+          <span>Item Modifiers</span>
+        </NavLink>
+      ),
+      permit: {
+        permissions: ["create-product"],
+        operator: "or",
+      },
+      key: "modifiers",
+      icon: <BsBuildingFillGear />,
+    },
+    {
+      label: (
+        <NavLink to="/admin/cash-drawer">
+          <span>Cash Drawer</span>
+        </NavLink>
+      ),
+      permit: {
+        permissions: ["readAll-saleInvoice"],
+        operator: "or",
+      },
+      key: "cashDrawer",
+      icon: <BsBuildingFillGear />,
+    },
+    {
+      label: (
         <NavLink to="/admin/store">
           <span>Store / Branch</span>
         </NavLink>

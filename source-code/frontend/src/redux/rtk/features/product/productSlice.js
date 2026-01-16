@@ -107,7 +107,7 @@ export const updateProduct = createAsyncThunk(
         method: fileConfig() === "laravel" ? "post" : "put",
         headers: {
           Accept: "application/json",
-          "Content-Type": "application/json;charset=UTF-8",
+          "Content-Type": "multipart/form-data",
         },
         url: `product/${id}`,
         data: values,

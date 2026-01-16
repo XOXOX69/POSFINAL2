@@ -4,9 +4,12 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { loadAllVatTax } from "../../redux/rtk/features/vatTax/vatTaxSlice";
+import { updateCustomerDisplay, clearCustomerDisplay } from "../../redux/rtk/features/customerDisplay/customerDisplaySlice";
 import AddPos from "./AddPos";
 import PaymentForm from "./PaymentForm";
 import ProductsForSale from "./ProductsForSale";
+// import PosToolbar from "./PosToolbar";
+// import "./pos-dark.css";
 
 const Pos = (props) => {
   const isLogged = Boolean(localStorage.getItem("isLogged"));
@@ -21,6 +24,7 @@ const Pos = (props) => {
   const [due, setDue] = useState(0);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const { list: vatTaxList, loading: vatTaxLoading } = useSelector(
     (state) => state.vatTax
   );
@@ -70,6 +74,28 @@ const Pos = (props) => {
     }, 0);
     const due = totalPayable - paidAmount;
     setDue(due);
+
+    // Update customer display for second screen
+    if (productArray && productArray.length > 0) {
+      const displayItems = productArray.map((item, index) => ({
+        id: item.productId || index,
+        name: item.productName || 'Unknown Product',
+        quantity: item.productQuantity || 0,
+        price: item.productSalePrice || 0,
+        discount: subTotal[index]?.subDiscount || 0,
+        subtotal: subTotal[index]?.subPrice || 0,
+      }));
+
+      dispatch(updateCustomerDisplay({
+        items: displayItems,
+        subtotal: total,
+        tax: totalTaxAmount,
+        discount: subTotal.reduce((acc, item) => acc + (item.subDiscount || 0), 0),
+        total: totalPayable,
+      }));
+    } else {
+      dispatch(clearCustomerDisplay());
+    }
   };
 
   const total = subTotal.reduce((acc, item) => {
@@ -84,10 +110,10 @@ const Pos = (props) => {
   const totalPayable = total + totalTaxAmount;
 
   return (
-    <div className="relative">
+    <div className={`relative`}>
       <div className="h-full min-h-[calc(100vh-160px)] relative pb-2">
         <div className="flex flex-col xl:flex-row gap-3 h-full">
-          <div className="2xl:w-2/5  xl:w-1/2 p-2 bg-[#F1F1F1] h-full">
+          <div className={`2xl:w-2/5 xl:w-1/2 p-2 bg-[#F1F1F1] h-full rounded-lg`}>
             <ProductsForSale
               setSelectedProduct={setSelectedProduct}
               form={form}
@@ -124,19 +150,19 @@ const Pos = (props) => {
           // validLoading={validLoading}
         />
       </div>
-      <div className="sticky bottom-0 right-0 w-full  border rounded bg-white p-2 px-5 mt-3 z-10">
+        <div className={`sticky bottom-0 right-0 w-full border rounded bg-white p-2 px-5 mt-3 z-10`}>
         <div className="flex items-center justify-between">
           <div>
-            <span className="font-medium md:font-semibold text-lg">
+            <span className={`font-medium md:font-semibold text-lg`}>
               Net Total
             </span>
             :{" "}
-            <span className="font-bold text-base lg:text-xl">
-              {totalPayable.toFixed(3)}
+            <span className={`font-bold text-base lg:text-xl`}>
+              ₱{totalPayable.toFixed(2)}
             </span>
           </div>
           <div>
-            <Button onClick={() => form.submit()} type="primary">
+            <Button onClick={() => form.submit()} type="primary" size="large">
               <strong>Continue Sale</strong>
             </Button>
           </div>

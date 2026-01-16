@@ -217,6 +217,17 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('all-branches')
                 ->prefix('all-branches')
                 ->group(base_path('routes/allBranchesRoutes.php'));
+            Route::middleware('cfd-ads')
+                ->prefix('cfd-ads')
+                ->group(base_path('routes/cfdAdsRoutes.php'));
+            // Item Modifiers
+            Route::middleware('auth:sanctum')
+                ->prefix('modifiers')
+                ->group(base_path('routes/modifierRoutes.php'));
+            // Cash Drawer
+            Route::middleware('auth:sanctum')
+                ->prefix('cash-drawer')
+                ->group(base_path('routes/cashDrawerRoutes.php'));
         });
     }
 }

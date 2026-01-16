@@ -19,6 +19,8 @@ export default defineConfig({
   },
   // Performance optimizations
   server: {
+    host: '127.0.0.1',
+    port: 3000,
     hmr: {
       overlay: false, // Disable error overlay for faster updates
     },

@@ -10,6 +10,7 @@ import LoaderSpinner from "./components/loader/LoaderSpinner";
 import Login from "./components/user/Login";
 import { getSetting } from "./redux/rtk/features/setting/settingSlice";
 import ServerError from "./components/404/ServerError";
+import { CustomerScreen } from "./components/CustomerScreen";
 
 // Lazy load layouts for better initial load
 const CustomerLayout = lazy(() => import("@/layouts/CustomerLayout"));
@@ -19,6 +20,7 @@ const AdminLayout = lazy(() => import("@/layouts/AdminLayout"));
 const MemoizedRoutes = memo(function MemoizedRoutes() {
   return (
     <Routes>
+      <Route path="/customer-screen" element={<CustomerScreen />} />
       <Route
         path="/*"
         element={

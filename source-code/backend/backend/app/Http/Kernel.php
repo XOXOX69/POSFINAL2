@@ -329,6 +329,10 @@ class Kernel extends HttpKernel
             ThrottleRequests::class,
             SubstituteBindings::class,
         ],
+        'cfd-ads' => [
+            ThrottleRequests::class,
+            SubstituteBindings::class,
+        ],
     ];
 
     /**

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadAllCustomer } from "../../redux/rtk/features/customer/customerSlice";
 import { loadProduct } from "../../redux/rtk/features/product/productSlice";
 import { addSale } from "../../redux/rtk/features/sale/saleSlice";
+import { updateCustomerDisplay, clearCustomerDisplay } from "../../redux/rtk/features/customerDisplay/customerDisplaySlice";
 import Products from "./Products";
 
 import dayjs from "dayjs";
@@ -98,7 +99,8 @@ const AddSale = () => {
       if (resp.payload.message === "success") {
         form.resetFields();
         setLoader(false);
-
+        // Clear customer display after successful sale
+        dispatch(clearCustomerDisplay());
         navigate(`/admin/sale/${resp.payload.data.id}`);
       } else {
         setLoader(false);
@@ -107,6 +109,8 @@ const AddSale = () => {
       setLoader(false);
     }
   };
+
+  const customer = allCustomer?.find((item) => item.id === selectedCustomer);
 
   // total calculate
   const totalCalculator = () => {
@@ -145,9 +149,20 @@ const AddSale = () => {
     }, 0);
     const due = totalPayable - paidAmount;
     setDue(due);
+
+    // Update customer display screen
+    const totalDiscountAmount = subTotal.reduce((acc, item) => acc + item.subDiscount, 0);
+    const displayItems = productArray?.filter(item => item.productId) || [];
+    dispatch(updateCustomerDisplay({
+      items: displayItems,
+      subtotal: total,
+      tax: totalTaxAmount,
+      discount: totalDiscountAmount,
+      total: totalPayable,
+      customerName: customer?.name || "",
+    }));
   };
 
-  const customer = allCustomer?.find((item) => item.id === selectedCustomer);
   const total = subTotal.reduce((acc, item) => {
     return acc + item.subPrice;
   }, 0);

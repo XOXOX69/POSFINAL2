@@ -1,0 +1,445 @@
+/* Customer-Facing Display (CFD) - Jollibee Style */
+.customer-screen {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #0a0a1a;
+}
+
+/* ===== LEFT SECTION - PROMO/AD SPACE (50%) ===== */
+.ad-section {
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(180deg, #1a0a2e 0%, #2d1b4e 50%, #1a0a2e 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.ad-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* Media container for images and videos */
+.media-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.ad-media-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ad-media-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.media-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.8));
+  padding: 40px;
+  text-align: center;
+}
+
+.media-overlay .promo-badge {
+  background: #ffd700;
+  color: #8b0000;
+  padding: 6px 20px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: inline-block;
+  margin-bottom: 15px;
+}
+
+.media-overlay .promo-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.media-overlay .promo-price {
+  font-size: 42px;
+  font-weight: 900;
+  color: #ffd700;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.ad-image-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.ad-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.promo-card {
+  width: 90%;
+  max-width: 600px;
+  background: linear-gradient(145deg, #c41e3a 0%, #8b0000 100%);
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.promo-card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.promo-badge {
+  background: #ffd700;
+  color: #8b0000;
+  padding: 8px 24px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.promo-title {
+  font-size: 42px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 15px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  line-height: 1.2;
+}
+
+.promo-subtitle {
+  font-size: 24px;
+  color: #ffd700;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.promo-description {
+  font-size: 18px;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.5;
+}
+
+.promo-price {
+  font-size: 56px;
+  font-weight: 900;
+  color: #ffd700;
+  margin-top: 20px;
+  text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+}
+
+.ad-indicators {
+  position: absolute;
+  bottom: 30px;
+  display: flex;
+  gap: 10px;
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.indicator.active {
+  background: #ffd700;
+  transform: scale(1.3);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+/* ===== RIGHT SECTION - ORDER DISPLAY (50%) ===== */
+.order-section {
+  width: 50%;
+  height: 100%;
+  background: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Amount Due Header */
+.amount-header {
+  background: #ffffff;
+  padding: 30px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.amount-label {
+  font-size: 28px;
+  font-weight: 700;
+  color: #d4a800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.amount-value {
+  font-size: 48px;
+  font-weight: 900;
+  color: #333333;
+  font-family: "Arial", sans-serif;
+}
+
+/* Order Items List */
+.order-items-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px 40px;
+  background: #ffffff;
+}
+
+.order-items-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.order-items-wrapper::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+.order-items-wrapper::-webkit-scrollbar-thumb {
+  background: #cccccc;
+  border-radius: 3px;
+}
+
+/* Section Divider */
+.order-divider {
+  color: #666666;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 12px 0;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+  border-bottom: 1px dashed #e0e0e0;
+}
+
+/* Individual Order Item */
+.order-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 8px 0;
+  border-bottom: none;
+}
+
+.order-item-row:last-child {
+  border-bottom: none;
+}
+
+.item-details {
+  flex: 1;
+  padding-right: 20px;
+}
+
+.item-quantity {
+  color: #333333;
+  font-size: 16px;
+  font-weight: 500;
+  margin-right: 8px;
+}
+
+.item-name {
+  color: #333333;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.item-modifiers {
+  color: #888888;
+  font-size: 13px;
+  margin-top: 4px;
+  padding-left: 30px;
+}
+
+.item-price {
+  color: #333333;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: right;
+  min-width: 80px;
+}
+
+/* Empty State */
+.empty-order-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background: #ffffff;
+}
+
+.empty-icon {
+  font-size: 60px;
+  margin-bottom: 20px;
+  opacity: 0.4;
+}
+
+.empty-message {
+  font-size: 22px;
+  color: #666666;
+  font-weight: 400;
+}
+
+.empty-submessage {
+  font-size: 16px;
+  color: #999999;
+  margin-top: 10px;
+}
+
+/* Order Summary Footer */
+.order-summary-footer {
+  background: #ffffff;
+  padding: 20px 40px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 15px;
+}
+
+.summary-label {
+  color: #666666;
+}
+
+.summary-value {
+  color: #333333;
+}
+
+.summary-row.discount .summary-value {
+  color: #22c55e;
+}
+
+.summary-row.total {
+  padding-top: 12px;
+  margin-top: 8px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.summary-row.total .summary-label {
+  font-size: 18px;
+  font-weight: 600;
+  color: #d4a800;
+}
+
+.summary-row.total .summary-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #333333;
+}
+
+/* Thank You Message */
+.thank-you-bar {
+  background: #f5f5f5;
+  padding: 15px 40px;
+  text-align: center;
+  border-top: 1px solid #e0e0e0;
+}
+
+.thank-you-text {
+  color: #888888;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.order-item-row {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Remove pulse animation for cleaner look */
+.amount-value {
+  animation: none;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 1400px) {
+  .amount-label {
+    font-size: 22px;
+  }
+  
+  .amount-value {
+    font-size: 38px;
+  }
+  
+  .item-name {
+    font-size: 16px;
+  }
+  
+  .promo-title {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .customer-screen {
+    flex-direction: column;
+  }
+  
+  .ad-section,
+  .order-section {
+    width: 100%;
+    height: 50%;
+  }
+}

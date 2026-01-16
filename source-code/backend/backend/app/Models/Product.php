@@ -82,4 +82,9 @@ class Product extends Model
     {
         return $this->belongsTo(Store::class, 'storeId');
     }
+
+    public function modifierGroups()
+    {
+        return $this->belongsToMany(ModifierGroup::class, 'product_modifier_groups', 'productId', 'modifierGroupId');
+    }
 }

@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadAllCustomer } from "../../redux/rtk/features/customer/customerSlice";
 import { loadProduct } from "../../redux/rtk/features/product/productSlice";
 import { addSale } from "../../redux/rtk/features/sale/saleSlice";
+import { updateCustomerDisplay, clearCustomerDisplay } from "../../redux/rtk/features/customerDisplay/customerDisplaySlice";
 import Products from "./Products";
 
 import dayjs from "dayjs";
@@ -82,6 +83,8 @@ const NewSale = () => {
       if (resp.payload.message === "success") {
         form.resetFields();
         setLoader(false);
+        // Clear customer display after successful sale
+        dispatch(clearCustomerDisplay());
         dispatch(
           loadAllSale({
             page: 1,
@@ -131,8 +134,9 @@ const NewSale = () => {
     setSubTotal(subTotal);
     setTotal(total);
 
+    const discountAmount = form.getFieldValue("discount") || 0;
     const afterDiscount = total
-      ? total - (form.getFieldValue("discount") || 0) || 0
+      ? total - discountAmount || 0
       : 0;
     setAfterDiscount(afterDiscount);
 
@@ -146,7 +150,8 @@ const NewSale = () => {
       (accumulator, currentValue) => accumulator + currentValue,
       0
     );
-    const afterVatTaxAdded = afterDiscount + (TotalTaxVatPercent / 100) * total;
+    const taxAmount = (TotalTaxVatPercent / 100) * total;
+    const afterVatTaxAdded = afterDiscount + taxAmount;
     setAfterVatTaxAdded(afterVatTaxAdded);
 
     //due count
@@ -154,6 +159,17 @@ const NewSale = () => {
       ? afterVatTaxAdded - (form.getFieldValue("paidAmount") || 0) || 0
       : 0;
     setDue(due);
+
+    // Update customer display screen
+    const displayItems = productArray?.filter(item => item.productId) || [];
+    dispatch(updateCustomerDisplay({
+      items: displayItems,
+      subtotal: total,
+      tax: taxAmount,
+      discount: discountAmount,
+      total: afterVatTaxAdded,
+      customerName: "",
+    }));
   };
 
   return (

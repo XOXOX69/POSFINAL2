@@ -41,9 +41,15 @@ const Dashboard = () => {
     <div className="dashboard-container">
       <div className="mb-5 animate-slideDown">
         <QuickLink pageConfig={pageConfig} setPageConfig={setPageConfig} />
-        <div className="animate-fadeIn">
-          {card}
-        </div>
+      </div>
+
+      {/* Currently Working Section - Below Quick Action */}
+      <div className="mb-5 animate-fadeIn" style={{maxWidth: '320px'}}>
+        <ActiveUsers />
+      </div>
+
+      <div className="mb-5 animate-fadeIn">
+        {card}
       </div>
       
       {/* Live Charts Section */}
@@ -51,21 +57,13 @@ const Dashboard = () => {
         <LiveCharts information={cardInformation} />
       </div>
 
-      {/* Active Users and Recent Content Section */}
-      <div className="mb-5 grid grid-cols-1 xl:grid-cols-4 gap-6">
-        {/* Currently Working Section */}
-        <div className="xl:col-span-1 animate-fadeInUp" style={{animationDelay: '0.2s'}}>
-          <ActiveUsers />
-        </div>
-        
-        {/* Recent Content Section */}
-        <div className="xl:col-span-3 animate-fadeInUp" style={{animationDelay: '0.3s'}}>
-          {data?.dashboardType === "inventory" ? (
-            <InventoryContent pageConfig={pageConfig} />
-          ) : (
-            <Content pageConfig={pageConfig} />
-          )}
-        </div>
+      {/* Recent Content Section */}
+      <div className="mb-5 animate-fadeInUp" style={{animationDelay: '0.2s'}}>
+        {data?.dashboardType === "inventory" ? (
+          <InventoryContent pageConfig={pageConfig} />
+        ) : (
+          <Content pageConfig={pageConfig} />
+        )}
       </div>
 
       <Footer data={data} />

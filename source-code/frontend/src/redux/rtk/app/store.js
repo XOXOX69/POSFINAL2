@@ -63,11 +63,17 @@ import userReducer from "../features/user/userSlice";
 import vatTaxSlice from "../features/vatTax/vatTaxSlice";
 import storeSlice from "../features/store/storeSlice";
 import allBranchesSlice from "../features/allBranches/allBranchesSlice";
+import customerDisplaySlice from "../features/customerDisplay/customerDisplaySlice";
+import cfdAdsSlice from "../features/cfdAds/cfdAdsSlice";
+import modifiersSlice from "../features/modifiers/modifiersSlice";
+import cashDrawerSlice from "../features/cashDrawer/cashDrawerSlice";
+import offlineSlice from "../features/offline/offlineSlice";
 
 const store = configureStore({
   reducer: {
     cart: cartReducer,
     cartDynamic: cartDynamicSlice,
+    customerDisplay: customerDisplaySlice,
     suppliers: supplierReducer,
     products: productReducer,
     productSearch: productSearchSlice,
@@ -130,6 +136,10 @@ const store = configureStore({
     deliveryFee: deliveryFeeSlice,
     store: storeSlice,
     allBranches: allBranchesSlice,
+    cfdAds: cfdAdsSlice,
+    modifiers: modifiersSlice,
+    cashDrawer: cashDrawerSlice,
+    offline: offlineSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

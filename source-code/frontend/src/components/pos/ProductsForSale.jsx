@@ -94,9 +94,51 @@ export default function ProductsForSale({
   };
 
   const Products = ({ item, index }) => {
+    const [imageError, setImageError] = useState(false);
+    
     const handleOnError = (e) => {
-      e.target.src = "/images/default.jpg";
+      setImageError(true);
     };
+    
+    // Build the correct image URL
+    const getImageUrl = () => {
+      if (!item.productThumbnailImageUrl) {
+        return null;
+      }
+      // If the URL doesn't start with http, add the backend URL
+      if (!item.productThumbnailImageUrl.startsWith('http')) {
+        return `http://127.0.0.1:8000${item.productThumbnailImageUrl}`;
+      }
+      return item.productThumbnailImageUrl;
+    };
+
+    // Generate initials from product name
+    const getInitials = (name) => {
+      if (!name) return "?";
+      const words = name.split(" ").filter(word => word.length > 0);
+      if (words.length === 1) {
+        return words[0].substring(0, 2).toUpperCase();
+      }
+      return words.slice(0, 2).map(word => word[0]).join("").toUpperCase();
+    };
+
+    // Generate a consistent color based on product name
+    const getColorFromName = (name) => {
+      const colors = [
+        "#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4", "#FFEAA7",
+        "#DDA0DD", "#98D8C8", "#F7DC6F", "#BB8FCE", "#85C1E9",
+        "#F8B500", "#00CED1", "#FF7F50", "#9370DB", "#20B2AA"
+      ];
+      let hash = 0;
+      for (let i = 0; i < name.length; i++) {
+        hash = name.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      return colors[Math.abs(hash) % colors.length];
+    };
+
+    const imageUrl = getImageUrl();
+    const showFallback = !imageUrl || imageError;
+    
     return (
       <Card
         style={{
@@ -117,14 +159,23 @@ export default function ProductsForSale({
           handleSelectedProds(item);
         }}>
         <div className="flex items-center gap-2">
-          <div className="w-[80px] h-[44px] relative">
-            <img
-              alt="example"
-              className="absolute object-cover w-full h-full"
-              src={item.productThumbnailImageUrl || ""}
-              onError={handleOnError}
-              style={{ width: "100%", height: "auto" }}
-            />
+          <div className="w-[80px] h-[54px] relative flex items-center justify-center">
+            {showFallback ? (
+              <div 
+                className="w-full h-full flex items-center justify-center rounded-md text-white font-bold text-lg"
+                style={{ backgroundColor: getColorFromName(item.name || "") }}
+              >
+                {getInitials(item.name)}
+              </div>
+            ) : (
+              <img
+                alt={item.name}
+                className="absolute object-cover w-full h-full rounded-md"
+                src={imageUrl}
+                onError={handleOnError}
+                style={{ width: "100%", height: "auto" }}
+              />
+            )}
           </div>
           <div className="flex-grow-1">
             <p className="font-bold mb-0">{stringShorter(item.name, 20)}</p>
