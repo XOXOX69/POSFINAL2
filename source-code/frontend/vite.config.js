@@ -5,7 +5,7 @@ import { defineConfig } from "vite";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: process.env.VITE_BASE_PATH || "/",
+  base: "/",
   resolve: {
     alias: {
       // eslint-disable-next-line no-undef
