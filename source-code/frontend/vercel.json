@@ -1,0 +1,13 @@
+{
+  "buildCommand": "npm install && npm run build",
+  "outputDirectory": "dist",
+  "env": {
+    "VITE_APP_API": "@vite_app_api"
+  },
+  "routes": [
+    {
+      "src": "^/.*",
+      "dest": "/index.html"
+    }
+  ]
+}
